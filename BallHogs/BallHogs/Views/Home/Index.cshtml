@@ -1,8 +1,32 @@
-﻿@{
+﻿@model ApiModel 
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+        <p>BALLHOG</p>
+        <p>WHERE YOU BALL OR GET BALLED ON!!</p>
+    </div>
+
+<!-- These would all be hyperlinks once a user is logged in-->
+<div align="center">
+    Create a BallHog Team <!--Rather than search on home screen this will be a link to player search-->
 </div>
+<div align="center">
+    My BallHog Team <!--Maybe users can create more than 1 team-->
+</div>
+<div align="center">
+    LETS BALL!!! <!--Users play match vs other users-->
+</div>
+<div align="center">
+    My Record  
+</div>
+
+
+<form asp-controller="Home" asp-action="Index" method="post">
+    <p>
+        Player Search: <input type="text" name="player" />
+        <input type="submit" value="Search" />
+    </p>
+</form>
