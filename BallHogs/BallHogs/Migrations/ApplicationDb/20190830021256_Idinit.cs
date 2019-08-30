@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace BallHogs.Data.Migrations
+namespace BallHogs.Migrations.ApplicationDb
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class Idinit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
