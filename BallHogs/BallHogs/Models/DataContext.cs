@@ -19,8 +19,7 @@ namespace BallHogs.Models
 
         internal Task GetUserIdAsync(ClaimsPrincipal user)
         {
-            throw new NotImplementedException();
+          throw new NotImplementedException();
         }
-
     }
 }
