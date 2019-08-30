@@ -21,6 +21,8 @@ namespace BallHogs.Controllers
 
         public IActionResult Index()
         {
+            ViewBag.LoggedIn = User.Identity.IsAuthenticated;
+            ViewBag.UID = User.Identity.Name;
             return View();
         }
 
@@ -38,13 +40,23 @@ namespace BallHogs.Controllers
 
             return View("SearchResult", content);
         }
-        /*      store team as an array fixed length of [5]?
-                w/in search prompt user 2 guards 2 forward 1 center
-        public IActionResult CreateATeam()
-        {   
-            return View();
-        }
+             /* store team as an array fixed length of [5]?
+              w/in search prompt user 2 guards 2 forward 1 center
+        public async Task <IActionResult> CreateATeam()
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri("https://www.balldontlie.io");
+
+            var response = await client.GetAsync($"/api/v1/players?search={player}");
+
+            var body = await response.Content.ReadAsStringAsync();
+
+            var content = JsonConvert.DeserializeObject<ApiModel>(body);
+
+            return View("SearchResult", content);
+        } 
         */
+        
         public IActionResult Privacy()
         {
             return View();

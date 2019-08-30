@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using BallHogs.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using BallHogs.Models;
 
 namespace BallHogs
 {
@@ -35,6 +36,8 @@ namespace BallHogs
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddDbContext<DataContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
