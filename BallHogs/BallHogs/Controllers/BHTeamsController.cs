@@ -6,16 +6,22 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BallHogs.Models;
+using Microsoft.AspNetCore.Http;
+using System.Net.Http;
 
 namespace BallHogs.Controllers
 {
     public class BHTeamsController : Controller
     {
+        private readonly IHttpClientFactory _httpClientFactory;
         private readonly DataContext _context;
+        private readonly ISession _session;
 
-        public BHTeamsController(DataContext context)
+        public BHTeamsController(IHttpClientFactory httpClientFactory, DataContext context, IHttpContextAccessor httpContextAccessor)
         {
+            _httpClientFactory = httpClientFactory;
             _context = context;
+            _session = httpContextAccessor.HttpContext.Session;
         }
 
         // GET: BHTeams
@@ -39,6 +45,7 @@ namespace BallHogs.Controllers
                 return NotFound();
             }
 
+            _session.SetInt32("Team", bHTeam.BHTeamId);
             return View(bHTeam);
         }
 
@@ -53,8 +60,9 @@ namespace BallHogs.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BHTeamId,TeamName,ManagerName")] BHTeam bHTeam)
+        public async Task<IActionResult> Create([Bind("BHTeamId,TeamName")] BHTeam bHTeam)
         {
+            bHTeam.ManagerName = User.Identity.Name;
             if (ModelState.IsValid)
             {
                 _context.Add(bHTeam);

@@ -5,12 +5,13 @@ using System.Threading.Tasks;
 
 namespace BallHogs.Models
 {
-    public class BHTeam
+    public class DataVM
     {
         public int BHTeamId { get; set; }
         public string TeamName { get; set; }
         public string ManagerName { get; set; }
 
-        public ICollection<PlayersOnTeams> Players { get; set; }
+        public List<Datum> Players { get; set; }
+
     }
 }

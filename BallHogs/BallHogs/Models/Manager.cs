@@ -16,6 +16,8 @@ namespace BallHogs.Models
         public Manager(string userName)
         {
             UserName = userName;
+            Wins = 0;
+            Losses = 0;
         }
     }
 }
