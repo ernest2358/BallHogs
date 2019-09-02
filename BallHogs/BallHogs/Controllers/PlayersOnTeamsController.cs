@@ -68,6 +68,48 @@ namespace BallHogs.Controllers
             return View(playersOnTeams);
         }
 
+        //Needs more work should everything _context actually be stored in session?
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddPlayers(string first_name, string last_name, string position, int id)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var currentUser = await _context.Managers.FirstOrDefaultAsync(m => m.UserName == User.Identity.Name);
+                if (currentUser == null)
+                {
+                    var userData = new Manager(User.Identity.Name);
+                    _context.Add(userData);
+                    await _context.SaveChangesAsync();
+                    currentUser = userData;
+                }
+
+                var player = new Datum
+                {
+                    First_name = first_name,
+                    Last_name = last_name,
+                    Position = position,
+                    Id = id
+                };
+                _context.Add(player);
+                await _context.SaveChangesAsync();
+                
+                //believe necessary to store specific player to a sepcific users team 
+                //player = await _context.PlayersOnTeams.FirstOrDefaultAsync(m => m.BHTeamId == id);
+
+                var team = new PlayersOnTeams();
+                team.BHTeamId = currentUser.ManagerID;
+                team.PlayersOnTeamsId = player.Id;
+                _context.Add(player);
+                await _context.SaveChangesAsync();
+                
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
         // GET: PlayersOnTeams/Create
         public IActionResult Create()
         {
