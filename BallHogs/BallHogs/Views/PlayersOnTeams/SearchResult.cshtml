@@ -1,0 +1,25 @@
+﻿@model ApiModel
+@{
+    ViewData["Title"] = "SearchResult";
+}
+
+<h1>List of Players</h1>
+<table class="table">
+
+    <tbody>
+        @foreach (var item in Model.Data)
+        {
+            <tr>
+                <td align="left">
+                    @Html.DisplayFor(modelItem => item.First_name)
+                </td>
+                <td align="left">
+                    @Html.DisplayFor(modelItem => item.Last_name)
+                </td>
+                <td align="left">
+                    @Html.DisplayFor(modelItem => item.Position)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

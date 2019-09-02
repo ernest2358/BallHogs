@@ -7,22 +7,41 @@ using Microsoft.AspNetCore.Mvc;
 using BallHogs.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace BallHogs.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly DataContext _context;
+        private readonly ISession _session;
 
-        public HomeController(IHttpClientFactory httpClientFactory)
+
+
+        public HomeController(IHttpClientFactory httpClientFactory, DataContext context, IHttpContextAccessor httpContextAccessor)
         {
             _httpClientFactory = httpClientFactory;
+            _context = context;
+            _session = httpContextAccessor.HttpContext.Session;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             ViewBag.LoggedIn = User.Identity.IsAuthenticated;
             ViewBag.UID = User.Identity.Name;
+
+            if (User.Identity.IsAuthenticated)
+            {
+                var manager = _context.Managers.FirstOrDefault(m => m.UserName == User.Identity.Name);
+                if(manager == null)
+                {
+                    manager = new Manager(User.Identity.Name);
+                    _context.Add(manager);
+                    await _context.SaveChangesAsync();
+                }
+            }
+
             return View();
         }
 

@@ -16,6 +16,7 @@ namespace BallHogs.Models
         public virtual DbSet<Manager> Managers { get; set; }
         public virtual DbSet<BHTeam> BHTeams { get; set; }
         public virtual DbSet<ManagerTeam> ManagerTeams { get; set; }
+        public virtual DbSet<PlayersOnTeams> PlayersOnTeams { get; set; }
 
         internal Task GetUserIdAsync(ClaimsPrincipal user)
         {
