@@ -20,7 +20,7 @@
             <a asp-controller="BHTeams" asp-action="Index">Manage My BallHog Team</a>
         </div>
         <div align="center">
-            LETS BALL!!! <!--Users play match vs other users-->
+            <a asp-controller="Home" asp-action="LetsBall">LETS BALL!!!</a>
         </div>
         <div align="center">
             My Record
@@ -32,11 +32,11 @@
     }
     <br />
     <br />
-    </div>
+</div>
 
-    <form asp-controller="Home" asp-action="Index" method="post">
-        <p>
-            Player Search: <input type="text" name="player" />
-            <input type="submit" value="Search" />
-        </p>
-    </form>
+<form asp-controller="Home" asp-action="Index" method="post">
+    <p>
+        Player Search: <input type="text" name="player" />
+        <input type="submit" value="Search" />
+    </p>
+</form>
