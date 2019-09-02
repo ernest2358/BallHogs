@@ -8,6 +8,7 @@ using BallHogs.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace BallHogs.Controllers
 {
@@ -33,7 +34,7 @@ namespace BallHogs.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-                var manager = _context.Managers.FirstOrDefault(m => m.UserName == User.Identity.Name);
+                var manager = await _context.Managers.FirstOrDefaultAsync(m => m.UserName == User.Identity.Name);
                 if(manager == null)
                 {
                     manager = new Manager(User.Identity.Name);
@@ -76,6 +77,22 @@ namespace BallHogs.Controllers
         } 
         */
         
+        public IActionResult LetsBall()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LetsBall(int homeId, int awayId, int? games)
+        {
+            var home = await _context.BHTeams.FirstOrDefaultAsync(m => m.BHTeamId == homeId);
+            var away = await _context.BHTeams.FirstOrDefaultAsync(m => m.BHTeamId == awayId);
+
+            var series = new Series(home, away, games);
+
+            return View("Results", series);
+        }
+
         public IActionResult Privacy()
         {
             return View();

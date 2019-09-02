@@ -1,0 +1,12 @@
+﻿@model Series
+@{
+    ViewData["Title"] = "Results";
+}
+
+<h1>Results</h1>
+
+<h1>@Model.Winner.TeamName Wins in @Model.GamesPlayed</h1>
+
+<h2>Home: @Model.HomeTeam.TeamName vs Away: @Model.AwayTeam.TeamName</h2>
+<h2>@Model.HomeWins - @Model.AwayWins</h2>
+

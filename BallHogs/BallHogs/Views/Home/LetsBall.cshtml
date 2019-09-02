@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewData["Title"] = "LetsBall";
+}
+
+<h1>LetsBall</h1>
+
+
+
+<form asp-controller="Home" asp-action="LetsBall" method="post">
+
+    <h2>Home</h2>
+    <p>
+        <input type="radio" name="homeId" value="1"> Dream Team<br>
+        <input type="radio" name="homeId" value="2"> Bad Boys<br>
+    </p>
+    <h2>Away</h2>
+    <p>
+        <input type="radio" name="awayId" value="1"> Dream Team<br>
+        <input type="radio" name="awayId" value="2"> Bad Boys<br>
+    </p>
+    <p>
+        <input type="radio" name="games" value="1"> Play 1 Game<br>
+        <input type="radio" name="games" value="3"> Play 3-Game Series<br>
+        <input type="radio" name="games" value="5"> Play 5-Game Series<br>
+        <input type="radio" name="games" value="7"> Play 7-Game Series<br>
+        <input type="radio" name="games" value="null"> Play Until Both Teams Win<br>
+    </p>
+
+    <input type="submit" value="Lets Ball!" />
+
+</form>

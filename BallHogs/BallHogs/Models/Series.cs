@@ -11,6 +11,8 @@ namespace BallHogs.Models
         public BHTeam Winner { get; set; }
         public int HomeWins { get; set; }
         public int AwayWins { get; set; }
+        public BHTeam HomeTeam { get; set; }
+        public BHTeam AwayTeam { get; set; }
 
 
         public Series(BHTeam home, BHTeam away, int? num)
@@ -18,9 +20,12 @@ namespace BallHogs.Models
             GamesPlayed = 0;
             HomeWins = 0;
             AwayWins = 0;
+            HomeTeam = home;
+            AwayTeam = away;
+
             if(num == null)
             {
-                while(HomeWins == 0 || AwayWins == 0)
+                while(HomeWins == 0 || AwayWins == 0 || GamesPlayed > 1000)
                 {
                     PlayGame(home, away);
                     GamesPlayed++;
@@ -28,7 +33,7 @@ namespace BallHogs.Models
             }
             else
             {
-                while(GamesPlayed < num)
+                while (Math.Max(HomeWins, AwayWins) <= num / 2)
                 {
                     PlayGame(home, away);
                     GamesPlayed++;
