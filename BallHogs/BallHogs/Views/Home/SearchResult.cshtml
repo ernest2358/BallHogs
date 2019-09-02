@@ -9,17 +9,23 @@
     <tbody>
         @foreach (var item in Model.Data)
         {
-            <tr>
-                <td align="left">
-                    @Html.DisplayFor(modelItem => item.First_name)
-                </td>
-                <td align="left">
-                    @Html.DisplayFor(modelItem => item.Last_name)
-                </td>
-                <td align="left">
-                    @Html.DisplayFor(modelItem => item.Position)
-                </td>
-            </tr>
+        <tr>
+            <td align="left">
+                @Html.DisplayFor(modelItem => item.First_name)
+            </td>
+            <td align="left">
+                @Html.DisplayFor(modelItem => item.Last_name)
+            </td>
+            <td align="left">
+                @Html.DisplayFor(modelItem => item.Position)
+            </td>
+            <td align="left">
+            @using (Html.BeginForm("Create", "PlayersOnTeam", new { FirstName = item.First_name, LastName = item.Last_name, Position = item.Position, link = item.Id }))
+            {
+                <input class="button" type="submit" value="Add to player to team" />
+            }
+            </td>
+        </tr>
         }
     </tbody>
 </table>
