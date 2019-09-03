@@ -14,7 +14,7 @@
     {
         <p>Hello, @ViewBag.UID</p>
         <div align="center">
-            Create a BallHog Team <!--Rather than search on home screen this will be a link to player search-->
+            <a asp-controller="BHTeams" asp-action="Create">Create a BallHog Team</a>
         </div>
         <div align="center">
             <a asp-controller="BHTeams" asp-action="Index">Manage My BallHog Team</a>
@@ -34,9 +34,3 @@
     <br />
 </div>
 
-<form asp-controller="Home" asp-action="Index" method="post">
-    <p>
-        Player Search: <input type="text" name="player" />
-        <input type="submit" value="Search" />
-    </p>
-</form>
