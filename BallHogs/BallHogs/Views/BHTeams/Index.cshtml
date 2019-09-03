@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Your BHTeam</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,10 +13,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TeamName)
+                Team Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ManagerName)
+                Manager Name
             </th>
             <th></th>
         </tr>
@@ -29,6 +29,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ManagerName)
+            </td>
+            <td>
+                <a asp-controller="Home" asp-action="SearchPlayer">Add 5 players to team</a>
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.BHTeamId">Edit</a> |

@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewData["Title"] = "SearchPlayer";
+}
+
+<h1>Search NBA Players</h1>
+
+<form asp-controller="Home" asp-action="Index" method="post">
+    <p>
+        Player Search: <input type="text" name="player" />
+        <input type="submit" value="Search" />
+    </p>
+</form>

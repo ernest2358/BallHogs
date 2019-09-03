@@ -111,6 +111,18 @@ namespace BallHogs.Migrations
 
                     b.Property<int>("DatumId");
 
+                    b.Property<string>("Name");
+
+                    b.Property<float>("PPG");
+
+                    b.Property<string>("Position");
+
+                    b.Property<float>("Rebounds");
+
+                    b.Property<float>("Steals");
+
+                    b.Property<int>("Year");
+
                     b.HasKey("PlayersOnTeamsId");
 
                     b.HasIndex("BHTeamId");

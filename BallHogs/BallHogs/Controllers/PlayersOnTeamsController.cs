@@ -29,7 +29,7 @@ namespace BallHogs.Controllers
         // GET: PlayersOnTeams
         public async Task<IActionResult> Index()
         {
-            var dataContext = _context.PlayersOnTeams.Include(p => p.BHTeam).Include(p => p.Datum);
+            var dataContext = _context.BHTeams.Include(r => r.Players).Where(x => x.ManagerName == User.Identity.Name);
             return View(await dataContext.ToListAsync());
         }
 
@@ -93,9 +93,9 @@ namespace BallHogs.Controllers
                 };
                 _context.Add(player);
                 await _context.SaveChangesAsync();
-                
-                //believe necessary to store specific player to a sepcific users team 
-                //player = await _context.PlayersOnTeams.FirstOrDefaultAsync(m => m.BHTeamId == id);
+
+                //Trying to add this blayer to our collection of plaers in BHteam
+                //player = await _context.BHTeams.FirstOrDefaultAsync(m => m.Players == ;
 
                 var team = new PlayersOnTeams();
                 team.BHTeamId = currentUser.ManagerID;
