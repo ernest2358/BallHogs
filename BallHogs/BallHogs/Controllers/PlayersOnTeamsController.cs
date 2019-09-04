@@ -58,7 +58,6 @@ namespace BallHogs.Controllers
 
             var playersOnTeams = await _context.PlayersOnTeams
                 .Include(p => p.BHTeam)
-                .Include(p => p.Datum)
                 .FirstOrDefaultAsync(m => m.PlayersOnTeamsId == id);
             if (playersOnTeams == null)
             {
@@ -68,42 +67,39 @@ namespace BallHogs.Controllers
             return View(playersOnTeams);
         }
 
-        //Needs more work should everything _context actually be stored in session?
+        // Needs more work should everything _context actually be stored in session?
+        // https://www.balldontlie.io/api/v1/season_averages?player_ids[]=735&season=2000
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddPlayers(string first_name, string last_name, string position, int id)
+        public async Task<IActionResult> AddPlayer(string first_name, string last_name, string position, int id)
         {
-            if (User.Identity.IsAuthenticated)
+            var teamID = _session.GetInt32("Team");
+            if (User.Identity.IsAuthenticated && teamID != null)
             {
-                var currentUser = await _context.Managers.FirstOrDefaultAsync(m => m.UserName == User.Identity.Name);
-                if (currentUser == null)
-                {
-                    var userData = new Manager(User.Identity.Name);
-                    _context.Add(userData);
-                    await _context.SaveChangesAsync();
-                    currentUser = userData;
-                }
+                var team = await _context.BHTeams.FirstOrDefaultAsync(m => m.BHTeamId == teamID);
 
-                var player = new Datum
+                var year = 2018;
+
+                var stats = await GetStats(id, year);
+                if (stats == null) return RedirectToAction("Index"); // no stats!
+
+                var playerOnTeam = new PlayersOnTeams
                 {
-                    First_name = first_name,
-                    Last_name = last_name,
+                    BHTeamId = (int)teamID,
+                    BHTeam = team,
+                    PlayerAPINum = id,
+                    Name = first_name + " " + last_name,
                     Position = position,
-                    Id = id
+                    Year = year,
+                    PPG = stats.pts,
+                    Steals = stats.stl,
+                    Rebounds = stats.reb
                 };
-                _context.Add(player);
+                _context.Add(playerOnTeam);
                 await _context.SaveChangesAsync();
 
-                //Trying to add this blayer to our collection of plaers in BHteam
-                //player = await _context.BHTeams.FirstOrDefaultAsync(m => m.Players == ;
-
-                var team = new PlayersOnTeams();
-                team.BHTeamId = currentUser.ManagerID;
-                team.PlayersOnTeamsId = player.Id;
-                _context.Add(player);
-                await _context.SaveChangesAsync();
-                
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home");
+                // return RedirectToAction("Details", "BHTeam", new { id = teamID });
             }
             else
             {
@@ -114,7 +110,6 @@ namespace BallHogs.Controllers
         public IActionResult Create()
         {
             ViewData["BHTeamId"] = new SelectList(_context.BHTeams, "BHTeamId", "BHTeamId");
-            ViewData["DatumId"] = new SelectList(_context.Set<Datum>(), "Id", "Id");
             return View();
         }
 
@@ -132,7 +127,6 @@ namespace BallHogs.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["BHTeamId"] = new SelectList(_context.BHTeams, "BHTeamId", "BHTeamId", playersOnTeams.BHTeamId);
-            ViewData["DatumId"] = new SelectList(_context.Set<Datum>(), "Id", "Id", playersOnTeams.DatumId);
             return View(playersOnTeams);
         }
 
@@ -150,7 +144,6 @@ namespace BallHogs.Controllers
                 return NotFound();
             }
             ViewData["BHTeamId"] = new SelectList(_context.BHTeams, "BHTeamId", "BHTeamId", playersOnTeams.BHTeamId);
-            ViewData["DatumId"] = new SelectList(_context.Set<Datum>(), "Id", "Id", playersOnTeams.DatumId);
             return View(playersOnTeams);
         }
 
@@ -187,7 +180,6 @@ namespace BallHogs.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["BHTeamId"] = new SelectList(_context.BHTeams, "BHTeamId", "BHTeamId", playersOnTeams.BHTeamId);
-            ViewData["DatumId"] = new SelectList(_context.Set<Datum>(), "Id", "Id", playersOnTeams.DatumId);
             return View(playersOnTeams);
         }
 
@@ -201,7 +193,6 @@ namespace BallHogs.Controllers
 
             var playersOnTeams = await _context.PlayersOnTeams
                 .Include(p => p.BHTeam)
-                .Include(p => p.Datum)
                 .FirstOrDefaultAsync(m => m.PlayersOnTeamsId == id);
             if (playersOnTeams == null)
             {
@@ -225,6 +216,18 @@ namespace BallHogs.Controllers
         private bool PlayersOnTeamsExists(int id)
         {
             return _context.PlayersOnTeams.Any(e => e.PlayersOnTeamsId == id);
+        }
+
+        public async Task<Stats> GetStats(int id, int year)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri("https://www.balldontlie.io");
+
+            var response = await client.GetAsync($"/api/v1/season_averages?player_ids[]={id}&season={year}");
+            var body = await response.Content.ReadAsStringAsync();
+            var content = JsonConvert.DeserializeObject<StatsReturn>(body);
+            if (content.data.Length == 0) return null;
+            return content.data[0];
         }
     }
 }

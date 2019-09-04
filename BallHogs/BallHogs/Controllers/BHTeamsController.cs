@@ -38,15 +38,17 @@ namespace BallHogs.Controllers
                 return NotFound();
             }
 
-            var bHTeam = await _context.BHTeams
-                .FirstOrDefaultAsync(m => m.BHTeamId == id);
-            if (bHTeam == null)
+            var vm = new DataVM();
+
+            vm.BHTeam = await _context.BHTeams.FirstOrDefaultAsync(m => m.BHTeamId == id);
+            if (vm.BHTeam == null)
             {
                 return NotFound();
             }
+            vm.Players = await _context.PlayersOnTeams.Where(x => x.BHTeamId == id).ToListAsync();
 
-            _session.SetInt32("Team", bHTeam.BHTeamId);
-            return View(bHTeam);
+            _session.SetInt32("Team", vm.BHTeam.BHTeamId);
+            return View(vm);
         }
 
         // GET: BHTeams/Create

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BallHogs.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20190901164132_AddCustRost")]
-    partial class AddCustRost
+    [Migration("20190904001411_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -38,33 +38,6 @@ namespace BallHogs.Migrations
                     b.HasIndex("ManagerID");
 
                     b.ToTable("BHTeams");
-                });
-
-            modelBuilder.Entity("BallHogs.Models.Datum", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("First_name");
-
-                    b.Property<int?>("Height_feet");
-
-                    b.Property<int?>("Height_inches");
-
-                    b.Property<string>("Last_name");
-
-                    b.Property<string>("Position");
-
-                    b.Property<int?>("TeamId");
-
-                    b.Property<int?>("Weight_pounds");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TeamId");
-
-                    b.ToTable("Datum");
                 });
 
             modelBuilder.Entity("BallHogs.Models.Manager", b =>
@@ -111,38 +84,25 @@ namespace BallHogs.Migrations
 
                     b.Property<int>("BHTeamId");
 
-                    b.Property<int>("DatumId");
+                    b.Property<string>("Name");
+
+                    b.Property<float>("PPG");
+
+                    b.Property<int>("PlayerAPINum");
+
+                    b.Property<string>("Position");
+
+                    b.Property<float>("Rebounds");
+
+                    b.Property<float>("Steals");
+
+                    b.Property<int>("Year");
 
                     b.HasKey("PlayersOnTeamsId");
 
                     b.HasIndex("BHTeamId");
 
-                    b.HasIndex("DatumId");
-
                     b.ToTable("PlayersOnTeams");
-                });
-
-            modelBuilder.Entity("BallHogs.Models.Team", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Abbreviation");
-
-                    b.Property<string>("City");
-
-                    b.Property<string>("Conference");
-
-                    b.Property<string>("Division");
-
-                    b.Property<string>("Full_name");
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Team");
                 });
 
             modelBuilder.Entity("BallHogs.Models.BHTeam", b =>
@@ -150,13 +110,6 @@ namespace BallHogs.Migrations
                     b.HasOne("BallHogs.Models.Manager")
                         .WithMany("BHTeams")
                         .HasForeignKey("ManagerID");
-                });
-
-            modelBuilder.Entity("BallHogs.Models.Datum", b =>
-                {
-                    b.HasOne("BallHogs.Models.Team", "Team")
-                        .WithMany()
-                        .HasForeignKey("TeamId");
                 });
 
             modelBuilder.Entity("BallHogs.Models.ManagerTeam", b =>
@@ -177,11 +130,6 @@ namespace BallHogs.Migrations
                     b.HasOne("BallHogs.Models.BHTeam", "BHTeam")
                         .WithMany("Players")
                         .HasForeignKey("BHTeamId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("BallHogs.Models.Datum", "Datum")
-                        .WithMany()
-                        .HasForeignKey("DatumId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
