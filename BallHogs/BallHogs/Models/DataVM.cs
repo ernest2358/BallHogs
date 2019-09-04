@@ -10,8 +10,8 @@ namespace BallHogs.Models
         public int BHTeamId { get; set; }
         public string TeamName { get; set; }
         public string ManagerName { get; set; }
-
-        public List<Datum> Players { get; set; }
+        public BHTeam BHTeam { get; set; }
+        public List<PlayersOnTeams> Players { get; set; }
 
     }
 }

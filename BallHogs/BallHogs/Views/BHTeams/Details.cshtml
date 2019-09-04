@@ -1,4 +1,4 @@
-﻿@model BallHogs.Models.BHTeam
+﻿@model BallHogs.Models.DataVM
 
 @{
     ViewData["Title"] = "Details";
@@ -11,16 +11,16 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TeamName)
+            @Html.DisplayNameFor(model => model.BHTeam.TeamName)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TeamName)
+            @Html.DisplayFor(model => model.BHTeam.TeamName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ManagerName)
+            @Html.DisplayNameFor(model => model.BHTeam.ManagerName)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ManagerName)
+            @Html.DisplayFor(model => model.BHTeam.ManagerName)
         </dd>
     </dl>
     <h5>Players</h5>
@@ -30,18 +30,18 @@
             @foreach (var player in Model.Players)
             {
                 <dd class="col-sm-10">
-                    @player.Datum.First_name
+                    @player.Name
                 </dd>
                 <dd class="col-sm-10">
-                    @player.Datum.Last_name
+                    @player.Position
                 </dd>
                 <dd class="col-sm-10">
-                    @player.Datum.Position
+                    @player.PPG
                 </dd>
             }
         </dl>
     }
-    @if (Model.Players == null || Model.Players.Count <= 5)
+    @if (Model.Players == null || Model.Players.Count < 5)
     {
         <div>
             <a asp-action="Index" asp-controller="PlayersOnTeams">Add a Player</a> |
@@ -50,6 +50,6 @@
 
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.BHTeamId">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.BHTeam.BHTeamId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

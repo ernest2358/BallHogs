@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BallHogs.Migrations
 {
-    public partial class firstinit : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,24 +20,6 @@ namespace BallHogs.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Managers", x => x.ManagerID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Team",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Abbreviation = table.Column<string>(nullable: true),
-                    City = table.Column<string>(nullable: true),
-                    Conference = table.Column<string>(nullable: true),
-                    Division = table.Column<string>(nullable: true),
-                    Full_name = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Team", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -58,38 +40,6 @@ namespace BallHogs.Migrations
                         column: x => x.ManagerID,
                         principalTable: "Managers",
                         principalColumn: "ManagerID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Datum",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    First_name = table.Column<string>(nullable: true),
-                    Height_feet = table.Column<int>(nullable: true),
-                    Height_inches = table.Column<int>(nullable: true),
-                    Last_name = table.Column<string>(nullable: true),
-                    Position = table.Column<string>(nullable: true),
-                    TeamId = table.Column<int>(nullable: true),
-                    Weight_pounds = table.Column<int>(nullable: true),
-                    BHTeamId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Datum", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Datum_BHTeams_BHTeamId",
-                        column: x => x.BHTeamId,
-                        principalTable: "BHTeams",
-                        principalColumn: "BHTeamId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Datum_Team_TeamId",
-                        column: x => x.TeamId,
-                        principalTable: "Team",
-                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -119,20 +69,36 @@ namespace BallHogs.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "PlayersOnTeams",
+                columns: table => new
+                {
+                    PlayersOnTeamsId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    PlayerAPINum = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Position = table.Column<string>(nullable: true),
+                    Year = table.Column<int>(nullable: false),
+                    PPG = table.Column<float>(nullable: false),
+                    Steals = table.Column<float>(nullable: false),
+                    Rebounds = table.Column<float>(nullable: false),
+                    BHTeamId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PlayersOnTeams", x => x.PlayersOnTeamsId);
+                    table.ForeignKey(
+                        name: "FK_PlayersOnTeams_BHTeams_BHTeamId",
+                        column: x => x.BHTeamId,
+                        principalTable: "BHTeams",
+                        principalColumn: "BHTeamId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_BHTeams_ManagerID",
                 table: "BHTeams",
                 column: "ManagerID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Datum_BHTeamId",
-                table: "Datum",
-                column: "BHTeamId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Datum_TeamId",
-                table: "Datum",
-                column: "TeamId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ManagerTeams_BHTeamId",
@@ -143,18 +109,20 @@ namespace BallHogs.Migrations
                 name: "IX_ManagerTeams_ManagerId",
                 table: "ManagerTeams",
                 column: "ManagerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PlayersOnTeams_BHTeamId",
+                table: "PlayersOnTeams",
+                column: "BHTeamId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Datum");
-
-            migrationBuilder.DropTable(
                 name: "ManagerTeams");
 
             migrationBuilder.DropTable(
-                name: "Team");
+                name: "PlayersOnTeams");
 
             migrationBuilder.DropTable(
                 name: "BHTeams");
