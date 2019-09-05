@@ -11,11 +11,17 @@
 
     <h2>Home</h2>
     <p>
+        <div>
+            Please choose a home team: <a asp-action="SelectATeam" asp-controller="BHTeams">Select a team</a>
+        </div>
         <input type="radio" name="homeId" value="1"> Dream Team<br>
         <input type="radio" name="homeId" value="2"> Bad Boys<br>
     </p>
     <h2>Away</h2>
     <p>
+        <div>
+            Please choose an away team: <a asp-action="SelectATeam" asp-controller="BHTeams">Select a team</a>
+        </div>
         <input type="radio" name="awayId" value="1"> Dream Team<br>
         <input type="radio" name="awayId" value="2"> Bad Boys<br>
     </p>

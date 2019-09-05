@@ -6,9 +6,6 @@
 
 <h1>Your BHTeam</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -22,7 +19,8 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.TeamName)
@@ -33,12 +31,13 @@
             <td>
                 <!--Do something similar to the BHTeam Details s00000 the button only appears if List of team <5  --maybe change that detail below ti add player-- add players should go to PlayersOnTeam(Index) allowing search and adding players.... Maybe make a view team that only shows team ouside of detail-->
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.BHTeamId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.BHTeamId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.BHTeamId">Delete</a>
+            <td align="left">
+                @using (Html.BeginForm("SelectATeam", "BHTeams", new { Team = item.BHTeamId, TeamName = item.TeamName, Players = item.Players }))
+                {
+                    <input class="button" type="submit" value="Select Team" />
+                }
             </td>
         </tr>
-}
+        }
     </tbody>
 </table>

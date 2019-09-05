@@ -30,6 +30,12 @@ namespace BallHogs.Controllers
             return View(await _context.BHTeams.ToListAsync());
         }
 
+        //Attempt to bring team to LETS BALL!!!
+        public async Task<IActionResult> SelectATeam()
+        {
+            return View(await _context.BHTeams.ToListAsync());
+        }
+
         // GET: BHTeams/Details/5
         public async Task<IActionResult> Details(int? id)
         {

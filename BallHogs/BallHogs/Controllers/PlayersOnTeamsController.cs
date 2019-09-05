@@ -99,7 +99,7 @@ namespace BallHogs.Controllers
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction("Index", "Home");
-                // return RedirectToAction("Details", "BHTeam", new { id = teamID });
+                // return RedirectToAction("Details", "BHTeam", new { id = teamID });  I see this here 
             }
             else
             {

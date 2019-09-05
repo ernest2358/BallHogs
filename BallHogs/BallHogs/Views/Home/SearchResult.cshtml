@@ -3,29 +3,38 @@
     ViewData["Title"] = "SearchResult";
 }
 
-<h1>List of Players</h1>
+<h1>Search other NBA Players</h1>
+
+<form asp-controller="Home" asp-action="Index" method="post">
+    <p>
+        Player Search: <input type="text" name="player" />
+        <input type="submit" value="Search" />
+    </p>
+</form>
+
+<h2>List of Players</h2>
 <table class="table">
 
     <tbody>
         @foreach (var item in Model.Data)
         {
-        <tr>
-            <td align="left">
-                @Html.DisplayFor(modelItem => item.First_name)
-            </td>
-            <td align="left">
-                @Html.DisplayFor(modelItem => item.Last_name)
-            </td>
-            <td align="left">
-                @Html.DisplayFor(modelItem => item.Position)
-            </td>
-            <td align="left">
-            @using (Html.BeginForm("Create", "PlayersOnTeam", new { FirstName = item.First_name, LastName = item.Last_name, Position = item.Position, link = item.Id }))
-            {
-                <input class="button" type="submit" value="Add to player to team"/>
-            }
-            </td>
-        </tr>
+            <tr>
+                <td align="left">
+                    @Html.DisplayFor(modelItem => item.First_name)
+                </td>
+                <td align="left">
+                    @Html.DisplayFor(modelItem => item.Last_name)
+                </td>
+                <td align="left">
+                    @Html.DisplayFor(modelItem => item.Position)
+                </td>
+                <td align="left">
+                    @using (Html.BeginForm("Create", "PlayersOnTeam", new { FirstName = item.First_name, LastName = item.Last_name, Position = item.Position, link = item.Id }))
+                    {
+                        <input class="button" type="submit" value="Add to player to team" />
+                    }
+                </td>
+            </tr>
         }
     </tbody>
 </table>
