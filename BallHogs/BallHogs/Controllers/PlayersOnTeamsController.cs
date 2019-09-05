@@ -39,7 +39,7 @@ namespace BallHogs.Controllers
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri("https://www.balldontlie.io");
 
-            var response = await client.GetAsync($"/api/v1/players?search={player}");
+            var response = await client.GetAsync($"/api/v1/players?search={player}&season=2018");
 
             var body = await response.Content.ReadAsStringAsync();
 

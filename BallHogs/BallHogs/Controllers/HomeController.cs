@@ -51,7 +51,7 @@ namespace BallHogs.Controllers
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri("https://www.balldontlie.io");
 
-            var response = await client.GetAsync($"/api/v1/players?search={player}?season=2018");
+            var response = await client.GetAsync($"/api/v1/players?search={player}&season=2018");
 
             var body = await response.Content.ReadAsStringAsync();
 
@@ -74,15 +74,6 @@ namespace BallHogs.Controllers
             var series = new Series(home, away, games);
 
             return View("Results", series);
-        }
-
-        public IActionResult SearchPlayer()
-        {
-            return View();
-        }
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
