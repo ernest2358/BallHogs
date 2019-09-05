@@ -5,7 +5,7 @@
 }
 
 <h1>Your BHTeam</h1>
-<p>Please</p>
+<p>Please Select a Team</p>
 
 <table class="table">
     <thead>
@@ -33,9 +33,9 @@
                 <!--Do something similar to the BHTeam Details s00000 the button only appears if List of team <5  --maybe change that detail below ti add player-- add players should go to PlayersOnTeam(Index) allowing search and adding players.... Maybe make a view team that only shows team ouside of detail-->
             </td>
             <td align="left">
-                @using (Html.BeginForm("SelectATeam", "BHTeams", new { Team = item.BHTeamId, TeamName = item.TeamName, Players = item.Players }))
+                @using (Html.BeginForm("LetsBall", "Home", new { Team = item.BHTeamId, TeamName = item.TeamName, Players = item.Players }))
                 {
-                    <input class="button" type="submit" value="Select Team" />
+                    <input class="button" type="submit" value="Select Team"/>
                 }
             </td>
         </tr>
