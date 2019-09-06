@@ -45,6 +45,9 @@ namespace BallHogs.Controllers
 
             var content = JsonConvert.DeserializeObject<ApiModel>(body);
 
+            var playersWithPosition = content.Data.Where(x => !string.IsNullOrEmpty(x.Position)).ToArray();
+            content.Data = playersWithPosition;
+
             return View("SearchResult", content);
         }
 
@@ -74,6 +77,35 @@ namespace BallHogs.Controllers
         public async Task<IActionResult> AddPlayer(string first_name, string last_name, string position, int id)
         {
             var teamID = _session.GetInt32("Team");
+            if (position != null)
+            {
+                if (User.Identity.IsAuthenticated && teamID != null)
+                {
+                    var team = await _context.BHTeams.FirstOrDefaultAsync(m => m.BHTeamId == teamID);
+
+                    var year = 2018;
+
+                    var stats = await GetStats(id, year);
+                    if (stats == null) return RedirectToAction("Index"); // no stats!
+
+                    var playerOnTeam = new PlayersOnTeams
+                    {
+                        BHTeamId = (int)teamID,
+                        BHTeam = team,
+                        PlayerAPINum = id,
+                        Name = first_name + " " + last_name,
+                        Position = position,
+                        Year = year,
+                        PPG = stats.pts,
+                        Steals = stats.stl,
+                        Rebounds = stats.reb
+                    };
+                    _context.Add(playerOnTeam);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction("Details", "BHTeams", new { id = teamID });
+                }
+            }
             if (User.Identity.IsAuthenticated && teamID != null)
             {
                 var team = await _context.BHTeams.FirstOrDefaultAsync(m => m.BHTeamId == teamID);
