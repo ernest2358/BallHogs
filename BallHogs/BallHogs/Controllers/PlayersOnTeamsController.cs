@@ -34,7 +34,7 @@ namespace BallHogs.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(string player)
+        public async Task<IActionResult> SearchGuards(string player)
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri("https://www.balldontlie.io");
@@ -45,7 +45,44 @@ namespace BallHogs.Controllers
 
             var content = JsonConvert.DeserializeObject<ApiModel>(body);
 
-            var playersWithPosition = content.Data.Where(x => !string.IsNullOrEmpty(x.Position)).ToArray();
+            var playersWithPosition = content.Data.Where(x => !string.IsNullOrEmpty(x.Position) && x.Position == "G" || x.Position == "G-F").ToArray();
+
+            content.Data = playersWithPosition;
+
+            return View("SearchResult", content);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SearchForwards(string player)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri("https://www.balldontlie.io");
+
+            var response = await client.GetAsync($"/api/v1/players?search={player}");
+
+            var body = await response.Content.ReadAsStringAsync();
+
+            var content = JsonConvert.DeserializeObject<ApiModel>(body);
+
+            var playersWithPosition = content.Data.Where(x => !string.IsNullOrEmpty(x.Position) && x.Position == "F").ToArray();
+            content.Data = playersWithPosition;
+
+            return View("SearchResult", content);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SearchCenter(string player)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri("https://www.balldontlie.io");
+
+            var response = await client.GetAsync($"/api/v1/players?search={player}");
+
+            var body = await response.Content.ReadAsStringAsync();
+
+            var content = JsonConvert.DeserializeObject<ApiModel>(body);
+
+            var playersWithPosition = content.Data.Where(x => !string.IsNullOrEmpty(x.Position) && x.Position == "C").ToArray();
             content.Data = playersWithPosition;
 
             return View("SearchResult", content);
