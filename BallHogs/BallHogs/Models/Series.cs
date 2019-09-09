@@ -25,7 +25,7 @@ namespace BallHogs.Models
 
             if (num == null)
             {
-                while (HomeWins == 0 || AwayWins == 0 || GamesPlayed > 1000)
+                while ((HomeWins == 0 || AwayWins == 0) && GamesPlayed < 100000)
                 {
                     PlayGame(home, away);
                     GamesPlayed++;
@@ -35,7 +35,7 @@ namespace BallHogs.Models
             {
                 while (Math.Max(HomeWins, AwayWins) <= num / 2)
                 {
-                    PlayGame(home, away);
+                    PlayGame(HomeTeam, AwayTeam);
                     GamesPlayed++;
                 }
             }

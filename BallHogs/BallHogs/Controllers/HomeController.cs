@@ -70,11 +70,25 @@ namespace BallHogs.Controllers
         [HttpPost]
         public async Task<IActionResult> LetsBall(int homeId, int awayId, int? games)
         {
+            homeId = 2;
+            awayId = 8;
+
             var home = await _context.BHTeams.FirstOrDefaultAsync(m => m.BHTeamId == homeId);
             var away = await _context.BHTeams.FirstOrDefaultAsync(m => m.BHTeamId == awayId);
 
-            var series = new Series(home, away, games);
+            var homePlayers = _context.PlayersOnTeams.Where(m => m.BHTeamId == homeId);
+            var awayPlayers = _context.PlayersOnTeams.Where(m => m.BHTeamId == awayId);
 
+            foreach(var player in homePlayers)
+            {
+                home.Players.Add(player);
+            }
+            foreach(var player in awayPlayers)
+            {
+                away.Players.Add(player);
+            }
+
+            var series = new Series(home, away, games);
             return View("Results", series);
         }
 
