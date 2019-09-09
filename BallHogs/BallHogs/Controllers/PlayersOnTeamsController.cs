@@ -65,6 +65,7 @@ namespace BallHogs.Controllers
             var content = JsonConvert.DeserializeObject<ApiModel>(body);
 
             var playersWithPosition = content.Data.Where(x => !string.IsNullOrEmpty(x.Position) && x.Position == "F").ToArray();
+
             content.Data = playersWithPosition;
 
             return View("SearchResult", content);

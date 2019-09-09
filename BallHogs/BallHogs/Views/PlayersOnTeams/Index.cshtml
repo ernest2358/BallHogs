@@ -4,16 +4,27 @@
 
 <h1>Search NBA Players</h1>
 
+<!---      attempt to make a drop down list or we can do link to list of ALL
 
 <div>
     <form asp-controller="PlayersOnTeams" asp-action="SearchGuards" method="post">
         <p>
             Guards Search: <input type="text" name="player" />
             <input type="submit" value="Search" />
-            @{ 
-                var list = new SelectList(Model.Data, "Position");
+            @{
+                //var list = new SelectList(Model.Data, "Position");
             }
-            <select asp-items="list"></select>  
+            <select asp-items="list"></select>
+        </p>
+    </form>
+</div>
+
+-->
+<div>
+    <form asp-controller="PlayersOnTeams" asp-action="SearchGuards" method="post">
+        <p>
+            Guard Search: <input type="text" name="player" />
+            <input type="submit" value="Search" />
         </p>
     </form>
 </div>
