@@ -56,6 +56,8 @@ namespace BallHogs.Controllers
             var body = await response.Content.ReadAsStringAsync();
 
             var content = JsonConvert.DeserializeObject<ApiModel>(body);
+            var playersWithPosition = content.Data.Where(x => !string.IsNullOrEmpty(x.Position)).ToArray();
+            content.Data = playersWithPosition;
 
             return View("SearchResult", content);
         }
@@ -74,15 +76,6 @@ namespace BallHogs.Controllers
             var series = new Series(home, away, games);
 
             return View("Results", series);
-        }
-
-        public IActionResult SearchPlayer()
-        {
-            return View();
-        }
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

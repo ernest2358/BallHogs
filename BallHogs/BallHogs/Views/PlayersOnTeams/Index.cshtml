@@ -2,15 +2,53 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Search NBA Players</h1>
 
-<p>
-    <a asp-action="Create">Search for a player</a>
-</p>
+<!---      attempt to make a drop down list or we can do link to list of ALL
 
-<form asp-controller="PlayersOnTeams" asp-action="Index" method="post">
-    <p>
-        Player Search: <input type="text" name="player" />
-        <input type="submit" value="Search" />
-    </p>
-</form>
+<div>
+    <form asp-controller="PlayersOnTeams" asp-action="SearchGuards" method="post">
+        <p>
+            Guards Search: <input type="text" name="player" />
+            <input type="submit" value="Search" />
+            @{
+                //var list = new SelectList(Model.Data, "Position");
+            }
+            <select asp-items="list"></select>
+        </p>
+    </form>
+</div>
+
+-->
+<div>
+    <form asp-controller="PlayersOnTeams" asp-action="SearchGuards" method="post">
+        <p>
+            Guard Search: <input type="text" name="player" />
+            <input type="submit" value="Search" />
+        </p>
+    </form>
+</div>
+
+<div>
+    <form asp-controller="PlayersOnTeams" asp-action="SearchForwards" method="post">
+        <p>
+            Forward Search: <input type="text" name="player" />
+            <input type="submit" value="Search" />
+        </p>
+    </form>
+</div>
+
+<div>
+    <form asp-controller="PlayersOnTeams" asp-action="SearchCenter" method="post">
+        <p>
+            Center Search: <input type="text" name="player" />
+            <input type="submit" value="Search" />
+        </p>
+    </form>
+</div>
+
+
+<br />
+<br />
+
+<p>Please select 5 NBA Players from the 2018 NBA season</p>

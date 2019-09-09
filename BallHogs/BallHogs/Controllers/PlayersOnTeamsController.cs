@@ -34,7 +34,7 @@ namespace BallHogs.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(string player)
+        public async Task<IActionResult> SearchGuards(string player)
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri("https://www.balldontlie.io");
@@ -44,6 +44,47 @@ namespace BallHogs.Controllers
             var body = await response.Content.ReadAsStringAsync();
 
             var content = JsonConvert.DeserializeObject<ApiModel>(body);
+
+            var playersWithPosition = content.Data.Where(x => !string.IsNullOrEmpty(x.Position) && x.Position == "G" || x.Position == "G-F").ToArray();
+
+            content.Data = playersWithPosition;
+
+            return View("SearchResult", content);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SearchForwards(string player)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri("https://www.balldontlie.io");
+
+            var response = await client.GetAsync($"/api/v1/players?search={player}");
+
+            var body = await response.Content.ReadAsStringAsync();
+
+            var content = JsonConvert.DeserializeObject<ApiModel>(body);
+
+            var playersWithPosition = content.Data.Where(x => !string.IsNullOrEmpty(x.Position) && x.Position == "F").ToArray();
+
+            content.Data = playersWithPosition;
+
+            return View("SearchResult", content);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SearchCenter(string player)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri("https://www.balldontlie.io");
+
+            var response = await client.GetAsync($"/api/v1/players?search={player}");
+
+            var body = await response.Content.ReadAsStringAsync();
+
+            var content = JsonConvert.DeserializeObject<ApiModel>(body);
+
+            var playersWithPosition = content.Data.Where(x => !string.IsNullOrEmpty(x.Position) && x.Position == "C").ToArray();
+            content.Data = playersWithPosition;
 
             return View("SearchResult", content);
         }
@@ -74,6 +115,35 @@ namespace BallHogs.Controllers
         public async Task<IActionResult> AddPlayer(string first_name, string last_name, string position, int id)
         {
             var teamID = _session.GetInt32("Team");
+            if (position != null)
+            {
+                if (User.Identity.IsAuthenticated && teamID != null)
+                {
+                    var team = await _context.BHTeams.FirstOrDefaultAsync(m => m.BHTeamId == teamID);
+
+                    var year = 2018;
+
+                    var stats = await GetStats(id, year);
+                    if (stats == null) return RedirectToAction("Index"); // no stats!
+
+                    var playerOnTeam = new PlayersOnTeams
+                    {
+                        BHTeamId = (int)teamID,
+                        BHTeam = team,
+                        PlayerAPINum = id,
+                        Name = first_name + " " + last_name,
+                        Position = position,
+                        Year = year,
+                        PPG = stats.pts,
+                        Steals = stats.stl,
+                        Rebounds = stats.reb
+                    };
+                    _context.Add(playerOnTeam);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction("Details", "BHTeams", new { id = teamID });
+                }
+            }
             if (User.Identity.IsAuthenticated && teamID != null)
             {
                 var team = await _context.BHTeams.FirstOrDefaultAsync(m => m.BHTeamId == teamID);
@@ -98,8 +168,7 @@ namespace BallHogs.Controllers
                 _context.Add(playerOnTeam);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction("Index", "Home");
-                // return RedirectToAction("Details", "BHTeam", new { id = teamID });
+                return RedirectToAction("Details", "BHTeams", new {id = teamID });
             }
             else
             {
