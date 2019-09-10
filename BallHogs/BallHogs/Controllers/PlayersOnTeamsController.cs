@@ -65,7 +65,6 @@ namespace BallHogs.Controllers
             var content = JsonConvert.DeserializeObject<ApiModel>(body);
 
             var playersWithPosition = content.Data.Where(x => !string.IsNullOrEmpty(x.Position) && x.Position == "F").ToArray();
-
             content.Data = playersWithPosition;
 
             return View("SearchResult", content);
@@ -119,7 +118,11 @@ namespace BallHogs.Controllers
             {
                 if (User.Identity.IsAuthenticated && teamID != null)
                 {
-                    var team = await _context.BHTeams.FirstOrDefaultAsync(m => m.BHTeamId == teamID);
+                    var team = await _context.BHTeams.Include(x => x.Players).FirstOrDefaultAsync(m => m.BHTeamId == teamID);
+                    if (team.Players.Any(x => x.PlayerAPINum == id))
+                    {
+                        return RedirectToAction("Details", "BHTeams", new { id = teamID });
+                    }
 
                     var year = 2018;
 
@@ -138,12 +141,13 @@ namespace BallHogs.Controllers
                         Steals = stats.stl,
                         Rebounds = stats.reb
                     };
+
                     _context.Add(playerOnTeam);
                     await _context.SaveChangesAsync();
-
                     return RedirectToAction("Details", "BHTeams", new { id = teamID });
                 }
             }
+            
             if (User.Identity.IsAuthenticated && teamID != null)
             {
                 var team = await _context.BHTeams.FirstOrDefaultAsync(m => m.BHTeamId == teamID);
@@ -165,16 +169,91 @@ namespace BallHogs.Controllers
                     Steals = stats.stl,
                     Rebounds = stats.reb
                 };
+
                 _context.Add(playerOnTeam);
                 await _context.SaveChangesAsync();
+                return RedirectToAction("Details", "BHTeams", new { id = teamID });
 
-                return RedirectToAction("Details", "BHTeams", new {id = teamID });
             }
             else
             {
                 return RedirectToAction("Index", "Home");
             }
         }
+
+        /*            Change this up and allow for advanced search     store year and no need for position parameter
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddPlayer(string first_name, string last_name, string position, int id)
+        {
+            var teamID = _session.GetInt32("Team");
+            if (position != null)
+            {
+                if (User.Identity.IsAuthenticated && teamID != null)
+                {
+                    var team = await _context.BHTeams.Include(x => x.Players).FirstOrDefaultAsync(m => m.BHTeamId == teamID);
+                    if (team.Players.Any(x => x.PlayerAPINum == id))
+                    {
+                        return RedirectToAction("Details", "BHTeams", new { id = teamID });
+                    }
+
+                    var year = 2018;
+
+                    var stats = await GetStats(id, year);
+                    if (stats == null) return RedirectToAction("Index"); // no stats!
+
+                    var playerOnTeam = new PlayersOnTeams
+                    {
+                        BHTeamId = (int)teamID,
+                        BHTeam = team,
+                        PlayerAPINum = id,
+                        Name = first_name + " " + last_name,
+                        Position = position,
+                        Year = year,
+                        PPG = stats.pts,
+                        Steals = stats.stl,
+                        Rebounds = stats.reb
+                    };
+
+                    _context.Add(playerOnTeam);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Details", "BHTeams", new { id = teamID });
+                }
+            }
+
+            if (User.Identity.IsAuthenticated && teamID != null)
+            {
+                var team = await _context.BHTeams.FirstOrDefaultAsync(m => m.BHTeamId == teamID);
+
+                var year = 2018;
+
+                var stats = await GetStats(id, year);
+                if (stats == null) return RedirectToAction("Index"); // no stats!
+
+                var playerOnTeam = new PlayersOnTeams
+                {
+                    BHTeamId = (int)teamID,
+                    BHTeam = team,
+                    PlayerAPINum = id,
+                    Name = first_name + " " + last_name,
+                    Position = position,
+                    Year = year,
+                    PPG = stats.pts,
+                    Steals = stats.stl,
+                    Rebounds = stats.reb
+                };
+
+                _context.Add(playerOnTeam);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Details", "BHTeams", new { id = teamID });
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }*/
+
         // GET: PlayersOnTeams/Create
         public IActionResult Create()
         {
