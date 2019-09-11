@@ -10,3 +10,8 @@
 <h2>Home: @Model.HomeTeam.TeamName vs Away: @Model.AwayTeam.TeamName</h2>
 <h2>@Model.HomeWins - @Model.AwayWins</h2>
 
+<h2>Scores:</h2>
+@foreach(var game in Model.SeriesResult)
+{
+    <h3>Game @game.GameNum:  @game.HomeScore - @game.AwayScore</h3>
+}
