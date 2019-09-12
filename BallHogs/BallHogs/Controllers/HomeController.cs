@@ -62,22 +62,26 @@ namespace BallHogs.Controllers
             return View("SearchResult", content);
         }
         
-        public IActionResult LetsBall()
+        public async Task<IActionResult> LetsBall()
         {
-            return View();
+            var allTeams = await _context.BHTeams.ToListAsync();
+            var fullTeams = new List<BHTeam>();
+            foreach(var team in allTeams)
+            {
+                var allPlayers = await _context.PlayersOnTeams.Where(m => m.BHTeamId == team.BHTeamId).ToListAsync();
+                if (allPlayers.Count == 5) fullTeams.Add(team);
+            }
+            return View(fullTeams);
         }
 
         [HttpPost]
         public async Task<IActionResult> LetsBall(int homeId, int awayId, int? games)
         {
-            homeId = 2;
-            awayId = 8;
-
             var home = await _context.BHTeams.FirstOrDefaultAsync(m => m.BHTeamId == homeId);
             var away = await _context.BHTeams.FirstOrDefaultAsync(m => m.BHTeamId == awayId);
 
-            var homePlayers = _context.PlayersOnTeams.Where(m => m.BHTeamId == homeId);
-            var awayPlayers = _context.PlayersOnTeams.Where(m => m.BHTeamId == awayId);
+            var homePlayers = await _context.PlayersOnTeams.Where(m => m.BHTeamId == homeId).ToListAsync();
+            var awayPlayers = await _context.PlayersOnTeams.Where(m => m.BHTeamId == awayId).ToListAsync();
 
             foreach(var player in homePlayers)
             {
