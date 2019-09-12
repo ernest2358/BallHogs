@@ -28,7 +28,7 @@ namespace BallHogs.Models
             if (num == null)
             {
                 var gameStat = new GameStat();
-                while ((HomeWins == 0 || AwayWins == 0) && GamesPlayed < 100000)
+                while ((HomeWins == 0 || AwayWins == 0 || GamesPlayed < 3) && GamesPlayed < 100000)
                 {
                     PlayGame(HomeTeam, AwayTeam, gameStat);
                     GamesPlayed++;

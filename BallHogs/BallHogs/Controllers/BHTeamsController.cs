@@ -28,7 +28,7 @@ namespace BallHogs.Controllers
         public async Task<IActionResult> Index()
         {
             ViewBag.UID = User.Identity.Name;
-            return View(await _context.BHTeams.ToListAsync());
+            return View(await _context.BHTeams.Where(m => m.ManagerName == User.Identity.Name).ToListAsync());
         }
 
         //Attempt to bring team to LETS BALL!!!

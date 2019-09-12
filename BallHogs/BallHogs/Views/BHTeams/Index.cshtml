@@ -38,11 +38,10 @@
             @if (item.ManagerName == ViewBag.UID)
             {
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.BHTeamId">Add 5 players to Team</a>
+                    <a asp-action="Details" asp-route-id="@item.BHTeamId">Manage Team Roster</a>
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.BHTeamId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.BHTeamId">Details</a> |
                     <a asp-action="Delete" asp-route-id="@item.BHTeamId">Delete</a>
                 </td>
 
