@@ -88,6 +88,21 @@ namespace BallHogs.Controllers
             return View("SearchResult", content);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AdvancedSearch(string player, int year)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri("https://www.balldontlie.io");
+
+            var response = await client.GetAsync($"/api/v1/players?search={player}"); // & year   plus change up addPlayer   ****************************************
+
+            var body = await response.Content.ReadAsStringAsync();
+
+            var content = JsonConvert.DeserializeObject<ApiModel>(body);
+
+            return View("SearchResult", content);
+        }
+
         // GET: PlayersOnTeams/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -141,7 +156,6 @@ namespace BallHogs.Controllers
                         Steals = stats.stl,
                         Rebounds = stats.reb
                     };
-
                     _context.Add(playerOnTeam);
                     await _context.SaveChangesAsync();
                     return RedirectToAction("Details", "BHTeams", new { id = teamID });
@@ -173,7 +187,6 @@ namespace BallHogs.Controllers
                 _context.Add(playerOnTeam);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Details", "BHTeams", new { id = teamID });
-
             }
             else
             {
@@ -181,10 +194,22 @@ namespace BallHogs.Controllers
             }
         }
 
-        /*            Change this up and allow for advanced search     store year and no need for position parameter
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddPlayer(string first_name, string last_name, string position, int id)
+        public async Task<IActionResult> RemovePlayer(int id)
+        {
+            var teamID = _session.GetInt32("Team");
+
+            var player = await _context.PlayersOnTeams.FindAsync(id);
+            _context.PlayersOnTeams.Remove(player);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Details", "BHTeams", new { id = teamID });
+        }
+
+        /*            Change this up and allow for advanced search     store year and no need for position parameter************************************************
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddLegendaryPlayer(string first_name, string last_name, int year, int id)
         {
             var teamID = _session.GetInt32("Team");
             if (position != null)
