@@ -15,7 +15,10 @@
         </div>
         @foreach (var team in Model)
         {
-            <input type="radio" name="homeId" value="@team.BHTeamId">@team.TeamName<br>
+            @if (team.ManagerName == ViewBag.UID)
+            {
+                <input type="radio" checked="checked" name="homeId" value="@team.BHTeamId">@team.TeamName<br>
+            }
         }
     </p>
     <h2>Away</h2>
@@ -25,11 +28,14 @@
         </div>
         @foreach (var team in Model)
         {
-            <input type="radio" name="awayId" value="@team.BHTeamId">@team.TeamName<br>
+            @if (team.ManagerName != ViewBag.UID)
+            {
+                <input type="radio" checked="checked" name="awayId" value="@team.BHTeamId">@team.TeamName<br>
+            }
         }
     </p>
     <p>
-        <input type="radio" name="games" value="1"> Play 1 Game<br>
+        <input type="radio" checked="checked" name="games" value="1"> Play 1 Game<br>
         <input type="radio" name="games" value="3"> Play 3-Game Series<br>
         <input type="radio" name="games" value="5"> Play 5-Game Series<br>
         <input type="radio" name="games" value="7"> Play 7-Game Series<br>

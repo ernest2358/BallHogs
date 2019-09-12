@@ -64,6 +64,8 @@ namespace BallHogs.Controllers
         
         public async Task<IActionResult> LetsBall()
         {
+            ViewBag.UID = User.Identity.Name;
+
             var allTeams = await _context.BHTeams.ToListAsync();
             var fullTeams = new List<BHTeam>();
             foreach(var team in allTeams)
