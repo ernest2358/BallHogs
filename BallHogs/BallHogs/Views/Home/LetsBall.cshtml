@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BallHogs.Models.BHTeam>
+﻿@model List<BHTeam>
 
 @{
     ViewData["Title"] = "LetsBall";
@@ -13,16 +13,20 @@
         <div>
             Please choose a home team: <a asp-action="SelectATeam" asp-controller="BHTeams">Select a team</a>
         </div>
-        <input type="radio" name="homeId" value="1"> Dream Team<br>
-        <input type="radio" name="homeId" value="2"> Bad Boys<br>
+        @foreach (var team in Model)
+        {
+            <input type="radio" name="homeId" value="@team.BHTeamId">@team.TeamName<br>
+        }
     </p>
     <h2>Away</h2>
     <p>
         <div>
             Please choose an away team: <a asp-action="SelectATeam" asp-controller="BHTeams">Select a team</a>
         </div>
-        <input type="radio" name="awayId" value="1"> Dream Team<br>
-        <input type="radio" name="awayId" value="2"> Bad Boys<br>
+        @foreach (var team in Model)
+        {
+            <input type="radio" name="awayId" value="@team.BHTeamId">@team.TeamName<br>
+        }
     </p>
     <p>
         <input type="radio" name="games" value="1"> Play 1 Game<br>
