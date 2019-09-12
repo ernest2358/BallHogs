@@ -13,6 +13,7 @@ namespace BallHogs.Models
         public int AwayWins { get; set; }
         public BHTeam HomeTeam { get; set; }
         public BHTeam AwayTeam { get; set; }
+        public List<GameStat> SeriesResult { get; set; }
 
 
         public Series(BHTeam home, BHTeam away, int? num)
@@ -22,21 +23,28 @@ namespace BallHogs.Models
             AwayWins = 0;
             HomeTeam = home;
             AwayTeam = away;
+            SeriesResult = new List<GameStat>();
 
             if (num == null)
             {
+                var gameStat = new GameStat();
                 while ((HomeWins == 0 || AwayWins == 0) && GamesPlayed < 100000)
                 {
-                    PlayGame(home, away);
+                    PlayGame(HomeTeam, AwayTeam, gameStat);
                     GamesPlayed++;
+                    gameStat.GameNum = GamesPlayed;
                 }
+                SeriesResult.Add(gameStat);
             }
             else
             {
                 while (Math.Max(HomeWins, AwayWins) <= num / 2)
                 {
-                    PlayGame(HomeTeam, AwayTeam);
+                    var gameStat = new GameStat();
+                    PlayGame(HomeTeam, AwayTeam, gameStat);
                     GamesPlayed++;
+                    gameStat.GameNum = GamesPlayed;
+                    SeriesResult.Add(gameStat);
                 }
             }
 
@@ -45,28 +53,40 @@ namespace BallHogs.Models
             if (HomeWins < AwayWins) Winner = away;
         }
 
-        public void PlayGame(BHTeam home, BHTeam away)
+        public void PlayGame(BHTeam home, BHTeam away, GameStat gameStat)
         {
-            int score = 0;
-            while (score == 0)
+            var tied = true;
+            while (tied)
             {
+                int score = 0;
                 foreach (var player in home.Players)
                 {
                     score += ApplyGauss(player.PPG);
                     score -= ApplyGauss(player.Steals);
                     score -= ApplyGauss(player.Rebounds);
                 }
+                gameStat.HomeScore = score;
+
+                score = 0;
                 foreach (var player in away.Players)
                 {
-                    score -= ApplyGauss(player.PPG);
-                    score += ApplyGauss(player.Steals);
-                    score += ApplyGauss(player.Rebounds);
+                    score += ApplyGauss(player.PPG);
+                    score -= ApplyGauss(player.Steals);
+                    score -= ApplyGauss(player.Rebounds);
+                }
+                gameStat.AwayScore = score;
+                if (gameStat.HomeScore > gameStat.AwayScore)
+                {
+                    HomeWins++;
+                    tied = false;
+                }
+                if (gameStat.HomeScore < gameStat.AwayScore)
+                {
+                    AwayWins++;
+                    tied = false;
                 }
             }
-            if (score > 0) HomeWins++;
-            if (score < 0) AwayWins++;
         }
-
 
         public int ApplyGauss(float mean)
         {
@@ -79,6 +99,13 @@ namespace BallHogs.Models
 
             return (int)randGauss;
         }
+    }
+
+    public class GameStat
+    {
+        public int GameNum { get; set; }
+        public int HomeScore { get; set; }
+        public int AwayScore { get; set; }
 
     }
 }
