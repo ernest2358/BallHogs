@@ -52,28 +52,3 @@
 <br />
 
 <p>Please select 5 NBA Players from the 2018 NBA season</p>
-
-<br />
-<br />
-<br />
-<br />
-
-<h2>Legendary Search: SELECT ANY PLAYER ALL TIME</h2>
-<p>*Must enter NBA players name and season*</p>
-
-<div>
-    <form asp-controller="PlayersOnTeams" asp-action="LegendarySearch" method="post">
-        <div>
-                Legend Search: 
-                           <div>
-                               <th>Player Name</th>
-                               <input type="text" name="player" />
-                           </div>
-                           <div>
-                               <th>Season: Year</th>
-                               <input type="text" name="year" />
-                           </div>
-            <input type="submit" value="Search" />
-        </div>
-    </form>
-</div>
