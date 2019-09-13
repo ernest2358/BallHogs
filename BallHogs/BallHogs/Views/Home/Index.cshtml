@@ -3,37 +3,34 @@
     ViewData["Title"] = "Home Page";
 }
 
-    @*<div class="basketball">*@
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>BALLHOG</p>
+    <p>WHERE YOU BALL OR GET BALLED ON!!</p>
+</div>
 
-        <div class="text-center">
-            <h1 class="display-4">Welcome</h1>
-            <p>BALLHOG</p>
-            <p>WHERE YOU BALL OR GET BALLED ON!!</p>
+<div class="text-center">
+    @if (ViewBag.LoggedIn)
+    {
+        <p>Hello, @ViewBag.UID</p>
+        <div align="center">
+            <a asp-controller="BHTeams" asp-action="Create">Create a BallHog Team</a>
         </div>
-
-        <div class="text-center">
-            @if (ViewBag.LoggedIn)
-            {
-                <p>Hello, @ViewBag.UID</p>
-                <div align="center">
-                    <a asp-controller="BHTeams" asp-action="Create">Create a BallHog Team</a>
-                </div>
-                <div align="center">
-                    <a asp-controller="BHTeams" asp-action="Index">Manage My BallHog Team</a>
-                </div>
-                <div align="center">
-                    <a asp-controller="Home" asp-action="LetsBall">LETS BALL!!!</a>
-                </div>
-                <div align="center">
-                    My Record
-                </div>
-            }
-            else
-            {
-                <p>Please <a asp-area="Identity" asp-page="/Account/Login">Login</a> or <a asp-area="Identity" asp-page="/Account/Register">Register</a></p>
-            }
-            <br />
-            <br />
+        <div align="center">
+            <a asp-controller="BHTeams" asp-action="Index">Manage My BallHog Team</a>
         </div>
-    @*</div>*@
+        <div align="center">
+            <a asp-controller="Home" asp-action="LetsBall">LETS BALL!!!</a>
+        </div>
+        <div align="center">
+            My Record
+        </div>
+    }
+    else
+    {
+        <p>Please <a asp-area="Identity" asp-page="/Account/Login">Login</a> or <a asp-area="Identity" asp-page="/Account/Register">Register</a></p>
+    }
+    <br />
+    <br />
+</div>
 
