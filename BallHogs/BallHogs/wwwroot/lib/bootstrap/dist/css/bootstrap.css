@@ -9761,6 +9761,18 @@ button.bg-dark:focus {
   text-align: center !important;
 }
 
+.basketball {
+    text-align: center !important;
+    color: white;
+    /*padding-top: 50px;
+    padding-bottom: 20px;*/
+    background-image: url("basketball.jpg");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    margin: auto;
+}
+
 @media (min-width: 576px) {
   .text-sm-left {
     text-align: left !important;
