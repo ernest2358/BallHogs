@@ -20,9 +20,10 @@
                     @Html.DisplayFor(modelItem => item.Position)
                 </td>
                 <td align="left">
-                    @using (Html.BeginForm("AddPlayer", "PlayersOnTeams", new { first_name = item.First_name, last_name = item.Last_name, position = item.Position, id = item.Id }))
+                                                                                                          
+                    @using (Html.BeginForm("AddPlayer", "PlayersOnTeams", new { first_name = item.First_name, last_name = item.Last_name, position = item.Position, year = TempData["Year"], id = item.Id }))
                     {
-                        <input class="button" type="submit" method="post" value="Add player to team" />
+                    <input class="button" type="submit" method="post" value="Add player to team" />
                     }
                 </td>
             </tr>
