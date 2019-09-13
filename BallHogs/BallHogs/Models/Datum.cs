@@ -26,5 +26,6 @@ namespace BallHogs.Models
         public Team Team { get; set; }
 
         public int? Weight_pounds { get; set; }
+
     }
 }
