@@ -43,13 +43,16 @@ html {
 
 body {
     /* Margin bottom by footer height */
-    margin-bottom: 60px;
+    /*margin-bottom: 60px;*/
     background-image: url("basketball.jpg");
-    background-size: cover;
+    /*background-size: initial;*/
     background-position: center center;
     background-repeat: no-repeat;
-    margin: auto;
+
+    height:1000px;
+    background-color:black;
 }
+
 .footer {
   position: absolute;
   bottom: 0;
