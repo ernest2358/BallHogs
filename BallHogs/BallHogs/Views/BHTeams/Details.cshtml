@@ -4,7 +4,7 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Manage your team</h1>
 
 <div>
     <h4>BHTeam</h4>
@@ -26,27 +26,28 @@
     <h5>Players</h5>
     @if (Model.Players != null)
     {
-<dl class="row">
-    @foreach (var player in Model.Players)
-    {
-        <dd class="col-sm-10">
-            @player.Name
-        </dd>
-        <dd class="col-sm-10">
-            @if (player.Year != 2018)
+        <dl class="row">
+            @foreach (var player in Model.Players)
             {
-                @player.Year
+                <dd class="col-sm-10">
+                    @player.Name
+                </dd>
+                <dd class="col-sm-10">
+                    @if (player.Year != 2018)
+                    {
+                        @player.Year
+                    }
+                    @player.Position
+                </dd>
+                <dd>
+                    <form method="post">
+                        <button type="submit" asp-controller="PlayersOnTeams" asp-action="RemovePlayer" asp-route-id="@player.PlayersOnTeamsId">Remove Player</button>
+                    </form>
+                </dd>
             }
-            @player.Position
-        </dd>
-        <dd>
-            <form method="post">
-                <button type="submit" asp-controller="PlayersOnTeams" asp-action="RemovePlayer" asp-route-id="@player.PlayersOnTeamsId">Remove Player</button>
-            </form>
-        </dd>
+        </dl>
     }
-</dl>
-    }
+    <p>**Teams without 5 players cannot participate in LETS BALL games**</p>
     @if (Model.Players == null || Model.Players.Count < 5)
     {
         <div>

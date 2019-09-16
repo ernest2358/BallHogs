@@ -4,22 +4,12 @@
 
 <h1>Search NBA Players</h1>
 
-<!---      attempt to make a drop down list or we can do link to list of ALL
+<p>Please select 5 NBA Players for your BHTeam</p>
 
-<div>
-    <form asp-controller="PlayersOnTeams" asp-action="SearchGuards" method="post">
-        <p>
-            Guards Search: <input type="text" name="player" />
-            <input type="submit" value="Search" />
-            @{
-                //var list = new SelectList(Model.Data, "Position");
-            }
-            <select asp-items="list"></select>
-        </p>
-    </form>
-</div>
+<br />
 
--->
+<p>Please select 5 NBA Players from the 2018 NBA season here:</p>
+
 <div>
     <form asp-controller="PlayersOnTeams" asp-action="SearchGuards" method="post">
         <p>
@@ -47,14 +37,9 @@
     </form>
 </div>
 
-
 <br />
 <br />
 
-<p>Please select 5 NBA Players from the 2018 NBA season</p>
-
-<br />
-<br />
 <br />
 <br />
 
@@ -64,16 +49,23 @@
 <div>
     <form asp-controller="PlayersOnTeams" asp-action="LegendarySearch" method="post">
         <div>
-                Legend Search: 
-                           <div>
-                               <th>Player Name</th>
-                               <input type="text" name="player" />
-                           </div>
-                           <div>
-                               <th>Season: Year</th>
-                               <input type="text" name="year" />
-                           </div>
+            Legend Search:
+            <div>
+                <th>Player Name</th>
+                <input type="text" name="player" />
+            </div>
+            <div>
+                <th>Season: Year</th>
+                <input type="text" name="year" />
+            </div>
             <input type="submit" value="Search" />
         </div>
+    </form>
+</div>
+
+<!--Does not work but need to pass in the id to back to team..... might need to wrap in form-->
+<div>
+    <form>
+    <a asp-action="Index" asp-controller="BHTeams">Back to Teams</a>
     </form>
 </div>
