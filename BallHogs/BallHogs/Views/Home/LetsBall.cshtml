@@ -11,7 +11,7 @@
     <h2>Home</h2>
     <p>
         <div>
-            Please choose a home team: <a asp-action="SelectATeam" asp-controller="BHTeams">Select a team</a>
+            Please choose a home team: 
         </div>
         @foreach (var team in Model)
         {
@@ -24,7 +24,7 @@
     <h2>Away</h2>
     <p>
         <div>
-            Please choose an away team: <a asp-action="SelectATeam" asp-controller="BHTeams">Select a team</a>
+            Please choose an away team:
         </div>
         @foreach (var team in Model)
         {
@@ -35,6 +35,9 @@
         }
     </p>
     <p>
+        <div>
+            Please select game/series:
+        </div>
         <input type="radio" checked="checked" name="games" value="1"> Play 1 Game<br>
         <input type="radio" name="games" value="3"> Play 3-Game Series<br>
         <input type="radio" name="games" value="5"> Play 5-Game Series<br>

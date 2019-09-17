@@ -100,6 +100,11 @@ namespace BallHogs.Controllers
 
             var content = JsonConvert.DeserializeObject<ApiModel>(body);
 
+            if (year == 0)
+            {
+                return RedirectToAction("Index");
+            }
+
             return View("SearchResult", content);
         }
 
