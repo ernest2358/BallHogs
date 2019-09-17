@@ -17,7 +17,7 @@
 
 <table class="table">
     <thead>
-        <tr>
+        <tr style="color:white">
             <th>
                 Team Name
             </th>
@@ -31,18 +31,18 @@
         @foreach (var item in Model)
         {
         <tr>
-            <td>
+            <td style="color:white">
                 @Html.DisplayFor(modelItem => item.TeamName)
             </td>
-            <td>
+            <td style="color:white">
                 @Html.DisplayFor(modelItem => item.ManagerName)
             </td>
             @if (item.ManagerName == ViewBag.UID)
             {
-                <td>
+                <td style="color:white">
                     <a asp-action="Details" asp-route-id="@item.BHTeamId">Manage Team Roster</a>
                 </td>
-                <td>
+                <td style="color:white">
                     <a asp-action="Edit" asp-route-id="@item.BHTeamId">Edit</a> |
                     <a asp-action="Delete" asp-route-id="@item.BHTeamId">Delete</a>
                 </td>
