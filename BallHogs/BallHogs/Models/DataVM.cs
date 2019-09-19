@@ -12,6 +12,6 @@ namespace BallHogs.Models
         public string ManagerName { get; set; }
         public BHTeam BHTeam { get; set; }
         public List<PlayersOnTeams> Players { get; set; }
-
+        public List<Datum> HouseholdPlayers { get; set; }
     }
 }

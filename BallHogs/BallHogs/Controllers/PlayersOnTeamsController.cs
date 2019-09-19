@@ -82,7 +82,26 @@ namespace BallHogs.Controllers
 
             var content = JsonConvert.DeserializeObject<ApiModel>(body);
 
-            var playersWithPosition = content.Data.Where(x => !string.IsNullOrEmpty(x.Position) && x.Position == "C").ToArray();
+            var playersWithPosition = content.Data.Where(x => !string.IsNullOrEmpty(x.Position) && x.Position == "C" || x.Position == "F-C").ToArray();
+            content.Data = playersWithPosition;
+
+            return View("SearchResult", content);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SearchAll(string player, int year)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri("https://www.balldontlie.io");
+
+            var response = await client.GetAsync($"/api/v1/players?search={player}");
+
+            var body = await response.Content.ReadAsStringAsync();
+
+            var content = JsonConvert.DeserializeObject<ApiModel>(body);
+
+            year = 2018;
+            var playersWithPosition = content.Data.Where(x => !string.IsNullOrEmpty(x.Position)).ToArray();
             content.Data = playersWithPosition;
 
             return View("SearchResult", content);

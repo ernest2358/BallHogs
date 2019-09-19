@@ -3,13 +3,32 @@
 }
 
 <h1>Search NBA Players</h1>
-
-<p>Please select 5 NBA Players for your BHTeam</p>
-
 <br />
 
-<p>Please select 5 NBA Players from the 2018 NBA season here:</p>
+<p>Please select 5 NBA Players for your BHTeam</p>
+<br />
+<br />
 
+<div>
+    <form asp-controller="PlayersOnTeams" asp-action="SearchAll" method="post">
+        <p>
+            Search All 2018 players: <input type="text" name="player" />
+            <input type="submit" value="Search" />
+        </p>
+    </form>
+</div>
+<br />
+
+<div>
+    <p>Can't think of 5 NBA players for your BHTeam? Click the link below to see the CBS top 100 NBA players</p>
+    <a href="https://www.cbssports.com/nba/news/top-100-nba-players-for-2018-19-lebron-james-headlines-rankings-front-loaded-with-west-superstars/" target="_blank">List of top 100 NBA Playersof 2018 season</a>
+</div>
+<br />
+<br />
+<br />
+
+
+<p>Select 5 NBA Players from the 2018 NBA season by position here:</p>
 <div>
     <form asp-controller="PlayersOnTeams" asp-action="SearchGuards" method="post">
         <p>
@@ -38,10 +57,6 @@
 </div>
 
 <br />
-<br />
-
-<br />
-<br />
 
 <h2>Legendary Search: SELECT ANY PLAYER ALL TIME</h2>
 <p>*Must enter NBA players name and season*</p>
@@ -66,6 +81,6 @@
 <!--Does not work but need to pass in the id to back to team..... might need to wrap in form-->
 <div>
     <form>
-    <a asp-action="Index" asp-controller="BHTeams">Back to Teams</a>
+        <a asp-action="Index" asp-controller="BHTeams">Back to Teams</a>
     </form>
 </div>
